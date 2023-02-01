@@ -4,55 +4,64 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class S2751_수정렬하기2 {
+    static int[] sorted;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         int size = Integer.parseInt(br.readLine());
+        sorted = new int[size];
         ArrayList<Integer> arr = new ArrayList<>();
         for(int i = 0; i < size; i++){
             arr.add(Integer.parseInt(br.readLine()));
         }
 
-        quickSort(arr, 0, size-1);
+        mergeSort(arr, 0, size - 1);
 
         for(int i = 0; i < size; i++){
-            System.out.print(arr.get(i)+"\n");
+            sb.append(arr.get(i) + "\n");
         }
+        System.out.println(sb);
     }
 
-    private static void quickSort(ArrayList<Integer> arr, int start, int end) {
-        if(start < end){
-            int q = quickSortPartition(arr, start, end);
+    static void merge(ArrayList<Integer> a, int m, int middle, int n){
+        int i,j,k;
+        i = m;
+        j = middle + 1;
+        k = m;
 
-            quickSort(arr, start, q-1);
-            quickSort(arr, q+1, end);
+        while(i <= middle && j <= n){
+            if(a.get(i) <= a.get(j)){
+                sorted[k] = a.get(i);
+                i++;
+            } else {
+                sorted[k] = a.get(j);
+                j++;
+            }
+            k++;
+        }
+        if(i > middle){
+            for(int t = j; t <= n; t++){
+                sorted[k] = a.get(t);
+                k++;
+            }
+        }
+        if(j > n){
+            for(int t = i; t <= middle; t++){
+                sorted[k] = a.get(t);
+                k++;
+            }
+        }
+
+        for(int t = m; t <= n; t++){
+            a.set(t, sorted[t]);
         }
     }
-
-    private static int quickSortPartition(ArrayList<Integer> arr, int start, int end) {
-        int pivot = arr.get(start);
-        int low = start;
-        int high = end;
-        int i,j,temp = 0;
-
-        while(low < high){
-            while(pivot > arr.get(low) && low <= end){
-                low++;
-            }
-            while(pivot < arr.get(high) && high >= start){
-                high--;
-            }
-            if(arr.get(low) > arr.get(high)){
-                temp = arr.get(low);
-                arr.set(low, arr.get(high));
-                arr.set(high, temp);
-            }
+    static void mergeSort(ArrayList<Integer> a, int m, int n){
+        if(m < n){
+            int middle = (m+n) / 2;
+            mergeSort(a, m, middle);
+            mergeSort(a, middle + 1, n);
+            merge(a, m, middle, n);
         }
-        if(arr.get(low) > arr.get(high)){
-            temp = arr.get(low);
-            arr.set(low, arr.get(high));
-            arr.set(high, temp);
-        }
-
-        return high;
     }
 }
