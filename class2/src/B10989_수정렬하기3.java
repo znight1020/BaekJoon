@@ -6,28 +6,22 @@ import java.util.ArrayList;
 public class B10989_수정렬하기3 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         int i,j,temp = 0;
         int size = Integer.parseInt(br.readLine());
+        int[] countingArr = new int[10001];
 
-
-        ArrayList<Integer> arr = new ArrayList<>();
         for(i = 0; i < size; i++){
-            arr.add(Integer.parseInt(br.readLine()));
+            int num = (Integer.parseInt(br.readLine()));
+            countingArr[num]++;
         }
 
-        for(i = 0; i < size-1; i++){
-            j = i;
-            while(arr.get(j) > arr.get(j+1)){
-                temp = arr.get(j);
-                arr.set(j, arr.get(j+1));
-                arr.set(j+1, temp);
-                j--;
-                if(j < 0) break;
+        for(i = 0; i < countingArr.length; i++){
+            for(j = 0; j < countingArr[i]; j++){
+                sb.append(i).append('\n');
             }
         }
 
-        for(i = 0; i< size; i++){
-            System.out.println(arr.get(i));
-        }
+        System.out.println(sb);
     }
 }
